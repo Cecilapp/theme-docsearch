@@ -1,0 +1,15 @@
+# Theme options
+docsearch:
+  enabled: true # display the search box (requires `appId`, `apiKey` and `indexName`)
+  appId: '' # Algolia application ID
+  apiKey: '' # Algolia search API key
+  indexName: '' # Algolia index name
+  version: '3' # DocSearch version, loaded from jsDelivr
+  #library: '' # URL of the DocSearch JS library (overrides `version`)
+  #stylesheet: '' # URL of the DocSearch stylesheet (overrides `version`)
+  container: '#docsearch' # CSS selector of the element replaced by the search button
+  language: true # filter the results on the current language (`lang` facet)
+  insights: false # send search events to Algolia Insights
+  #debug: false # keep the modal open on blur (follows `debug` by default)
+  #placeholder: '' # placeholder of the search input ("Search docs" by default)
+  #search_parameters: {} # additional Algolia search parameters

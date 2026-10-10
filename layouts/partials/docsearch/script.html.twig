@@ -1,0 +1,70 @@
+{#- DocSearch library and initialization, replacing the `container` element by the search button -#}
+{%- set options = site.docsearch|default({}) -%}
+{%- if (options.enabled ?? true) and options.appId|default and options.apiKey|default and options.indexName|default -%}
+{%- set library = options.library|default('https://cdn.jsdelivr.net/npm/@docsearch/js@%s/dist/umd/index.min.js'|format(options.version|default('3'))) -%}
+{%- set search_parameters = options.search_parameters|default({}) -%}
+{%- if options.language ?? true -%}
+{%- set search_parameters = {facetFilters: ['lang:' ~ site.language]}|merge(search_parameters) -%}
+{%- endif -%}
+{%- set config = {
+  container: options.container|default('#docsearch'),
+  appId: '' ~ options.appId,
+  apiKey: '' ~ options.apiKey,
+  indexName: '' ~ options.indexName,
+  insights: options.insights ?? false,
+  debug: options.debug ?? site.debug ?? false,
+  placeholder: options.placeholder|default('Search docs'|trans),
+  translations: {
+    button: {
+      buttonText: 'Search'|trans,
+      buttonAriaLabel: 'Search'|trans
+    },
+    modal: {
+      searchBox: {
+        resetButtonTitle: 'Clear the query'|trans,
+        resetButtonAriaLabel: 'Clear the query'|trans,
+        cancelButtonText: 'Cancel'|trans,
+        cancelButtonAriaLabel: 'Cancel'|trans
+      },
+      startScreen: {
+        recentSearchesTitle: 'Recent'|trans,
+        noRecentSearchesText: 'No recent searches'|trans,
+        saveRecentSearchButtonTitle: 'Save this search'|trans,
+        removeRecentSearchButtonTitle: 'Remove this search from history'|trans,
+        favoriteSearchesTitle: 'Favorite'|trans,
+        removeFavoriteSearchButtonTitle: 'Remove this search from favorites'|trans
+      },
+      errorScreen: {
+        titleText: 'Unable to fetch results'|trans,
+        helpText: 'You might want to check your network connection.'|trans
+      },
+      footer: {
+        selectText: 'to select'|trans,
+        selectKeyAriaLabel: 'Enter key'|trans,
+        navigateText: 'to navigate'|trans,
+        navigateUpKeyAriaLabel: 'Arrow up'|trans,
+        navigateDownKeyAriaLabel: 'Arrow down'|trans,
+        closeText: 'to close'|trans,
+        closeKeyAriaLabel: 'Escape key'|trans,
+        searchByText: 'Search by'|trans
+      },
+      noResultsScreen: {
+        noResultsText: 'No results for'|trans,
+        suggestedQueryText: 'Try searching for'|trans,
+        reportMissingResultsText: 'Believe this query should return results?'|trans,
+        reportMissingResultsLinkText: 'Let us know.'|trans
+      }
+    }
+  }
+} -%}
+{%- if search_parameters is not empty -%}
+{%- set config = config|merge({searchParameters: search_parameters}) -%}
+{%- endif %}
+{{ html(asset(library, {filename: 'docsearch.min.js', minify: false}), {id: 'docsearch-js', defer: ''}) }}
+{#- JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE #}
+<script>
+  document.getElementById('docsearch-js').addEventListener('load', function () {
+    docsearch({{ config|json_encode(1 b-or 64 b-or 256)|raw }});
+  });
+</script>
+{%- endif -%}

@@ -1,0 +1,30 @@
+title: DocSearch
+baseline: Algolia DocSearch for Cecil.
+description: Demo of the DocSearch component theme for Cecil.
+baseurl: http://localhost:8000/
+theme:
+  - docsearch
+# public credentials of the DocSearch documentation index (https://docsearch.algolia.com)
+docsearch:
+  appId: R2IYF7ETH7
+  apiKey: 599cec31baffa4868cae4e79f180729b
+  indexName: docsearch
+  language: false # this index has no `lang` facet
+language: en
+languages:
+  - code: en
+    name: English
+    locale: en_US
+  - code: fr
+    name: Français
+    locale: fr_FR
+    config:
+      baseline: Algolia DocSearch pour Cecil.
+      menus:
+        main:
+          - {id: docs, name: Documentation, url: /fr/docs/, weight: 10}
+          - {id: github, name: GitHub, url: 'https://github.com/Cecilapp/theme-docsearch', weight: 20}
+menus:
+  main:
+    - {id: docs, name: Documentation, url: /docs/, weight: 10}
+    - {id: github, name: GitHub, url: 'https://github.com/Cecilapp/theme-docsearch', weight: 20}

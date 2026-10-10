@@ -1,0 +1,5 @@
+{#- DocSearch button container, replaced by the search button (`container` option: `#docsearch`) -#}
+{%- set options = site.docsearch|default({}) -%}
+{%- if (options.enabled ?? true) and options.appId|default and options.apiKey|default and options.indexName|default -%}
+<div id="docsearch"></div>
+{%- endif -%}

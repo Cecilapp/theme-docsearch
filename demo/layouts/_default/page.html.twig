@@ -1,0 +1,99 @@
+{#- Base layout of the demo: Cecil's default layout (Pico CSS), with the DocSearch button in the header -#}
+<!DOCTYPE html>
+<html lang="{{ site.language }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{- include('partials/metatags.html.twig', {page: page, site: site}, with_context=false) ~}}
+    <meta name="color-scheme" content="light dark">
+    <style>{% apply minify_css ~%}
+      {{- include('partials/pico.css.twig') ~}}
+      @media (min-width: 1024px) {
+        body > header,
+        body > main,
+        body > footer {
+          max-width: 768px;
+        }
+      }
+      body > header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--pico-spacing);
+      }
+      body > header hgroup {
+        margin: 0;
+      }
+      .site-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--pico-h1-color);
+        text-decoration: none;
+      }
+      .header-tools {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--pico-spacing) / 2);
+      }
+      #theme-toggle {
+        --pico-background-color: transparent;
+        --pico-border-color: transparent;
+        --pico-color: var(--pico-muted-color);
+        margin: 0;
+        padding: .25rem;
+        border: none;
+        box-shadow: none;
+      }
+      /* the search modal follows the Pico accent color */
+      :root {
+        --docsearch-primary-color: var(--pico-primary);
+      }
+      /* resets Pico styles inside the search modal */
+      .DocSearch-Modal {
+        text-align: start;
+      }
+      .DocSearch-Modal input.DocSearch-Input {
+        height: 100%;
+        margin: 0;
+        padding: 0 0 0 8px;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+        color: var(--docsearch-text-color);
+        font-size: 1.2em;
+      }
+      {{- include('partials/highlight.css.twig') ~}}
+    {% endapply %}</style>
+    {{- include('partials/docsearch/head.html.twig') ~}}
+  </head>
+  <body>
+    <header>
+      <hgroup>
+        <a class="site-title" href="{{ url(site.home) }}">{{ site.title }}</a>
+        <p>{{ site.baseline }}</p>
+      </hgroup>
+      <div class="header-tools">
+        {{- include('partials/docsearch.html.twig') ~}}
+        {{- include('partials/theme-selector.html.twig', {}, with_context=false) ~}}
+      </div>
+      {{- include('partials/navigation.html.twig', {menu: 'main'}, with_context=false) ~}}
+    </header>
+    <main>
+      {{- include('partials/breadcrumb.html.twig') ~}}
+      {%- block content ~%}
+      {{- page.content ~}}
+      {%- endblock content ~%}
+    </main>
+    <footer>
+      {%- set powered_by -%}
+      <a href="{{ cecil.url }}">Cecil</a> &amp; <a href="https://docsearch.algolia.com">DocSearch</a>
+      {%- endset ~%}
+      <small>
+        {%- if page.translations|default([])|length >= 1 %}{{ include('partials/languages.html.twig') }} · {% endif -%}
+        {% trans %}Powered by %powered_by%{% endtrans %}
+      </small>
+    </footer>
+  </body>
+</html>

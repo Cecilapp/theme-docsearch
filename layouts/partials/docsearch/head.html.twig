@@ -1,0 +1,8 @@
+{#- DocSearch <head> tags: language meta (used by the crawler), Algolia preconnect and stylesheet -#}
+{%- set options = site.docsearch|default({}) -%}
+{%- if (options.enabled ?? true) and options.appId|default and options.apiKey|default and options.indexName|default -%}
+{%- set stylesheet = options.stylesheet|default('https://cdn.jsdelivr.net/npm/@docsearch/css@%s/dist/style.min.css'|format(options.version|default('3'))) %}
+<meta name="docsearch:language" content="{{ site.language }}">
+<link rel="preconnect" href="https://{{ options.appId }}-dsn.algolia.net" crossorigin>
+{{ html(asset(stylesheet, {filename: 'docsearch.min.css'})) }}
+{%- endif -%}
