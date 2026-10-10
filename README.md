@@ -8,7 +8,8 @@ The _DocSearch_ component theme for [Cecil](https://cecil.app) adds [Algolia Doc
 
 ## Features
 
-- **DocSearch button and modal**: `Ctrl`/`⌘` + `K` shortcut, keyboard navigation, recent and favorite searches
+- **DocSearch v5 button and modal**: `Ctrl`/`⌘` + `K` and `/` shortcuts, keyboard navigation, recent and favorite searches
+- **Ask AI** (optional), with an Algolia Agent Studio agent
 - **Multilingual**: results are filtered on the current language
 - **Translatable** (English and French included)
 - **Light and dark modes**, following the `data-theme` attribute of the root element
@@ -77,19 +78,20 @@ docsearch:
   appId: '' # Algolia application ID
   apiKey: '' # Algolia search API key
   indexName: '' # Algolia index name
-  version: '3' # DocSearch version, loaded from jsDelivr
+  version: '5' # DocSearch version, loaded from jsDelivr
   library: '' # URL of the DocSearch JS library (overrides `version`)
   stylesheet: '' # URL of the DocSearch stylesheet (overrides `version`)
   container: '#docsearch' # CSS selector of the element replaced by the search button
   language: true # filter the results on the current language (`lang` facet)
   insights: false # send search events to Algolia Insights
-  debug: false # keep the modal open on blur (follows `debug` by default)
   placeholder: '' # placeholder of the search input ("Search docs" by default)
   search_parameters: {} # additional Algolia search parameters
+  askAi: '' # Ask AI: Agent Studio agent ID, or `askAi` options (disabled by default)
 ```
 
 > [!NOTE]
 > The DocSearch library and stylesheet are downloaded from jsDelivr at build time, and published with the website.
+> The theme requires DocSearch **v5**: `version` only selects a v5 release (for example `'5.1'`), older versions are not supported.
 
 ### Language
 
@@ -103,6 +105,31 @@ docsearch:
     facetFilters: ['lang:en', 'version:2']
     hitsPerPage: 10
 ```
+
+The search parameters are applied to the index (`indices: [{name: <indexName>, searchParameters: …}]`).
+
+### Ask AI
+
+[Ask AI](https://docsearch.algolia.com) answers questions in the search modal, with an Algolia Agent Studio agent. Set the agent ID to enable it:
+
+```yaml
+docsearch:
+  askAi: <YOUR_AGENT_ID>
+```
+
+Other [`askAi` options](https://docsearch.algolia.com/docs/migrating-from-v4) can be set with a mapping, passed as is to DocSearch:
+
+```yaml
+docsearch:
+  askAi:
+    agentId: <YOUR_AGENT_ID>
+    searchParameters:
+      <YOUR_INDEX_NAME>:
+        filters: 'lang:en'
+```
+
+> [!NOTE]
+> With Ask AI, the full DocSearch library (`index.js`, ~620 KB) is loaded instead of the keyword search library (`docsearch.js`, ~300 KB). Ask AI texts are not translated by the theme.
 
 ### Container
 

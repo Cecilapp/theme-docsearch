@@ -1,18 +1,22 @@
 {#- DocSearch library and initialization, replacing the `container` element by the search button -#}
 {%- set options = site.docsearch|default({}) -%}
 {%- if (options.enabled ?? true) and options.appId|default and options.apiKey|default and options.indexName|default -%}
-{%- set library = options.library|default('https://cdn.jsdelivr.net/npm/@docsearch/js@%s/dist/umd/index.min.js'|format(options.version|default('3'))) -%}
+{#- keyword search only (`docsearch.js`), or keyword search and Ask AI (`index.js`) #}
+{%- set library = options.library|default('https://cdn.jsdelivr.net/npm/@docsearch/js@%s/dist/umd/%s.js'|format(options.version|default('5'), options.askAi|default ? 'index' : 'docsearch')) -%}
 {%- set search_parameters = options.search_parameters|default({}) -%}
 {%- if options.language ?? true -%}
 {%- set search_parameters = {facetFilters: ['lang:' ~ site.language]}|merge(search_parameters) -%}
+{%- endif -%}
+{%- set index = {name: '' ~ options.indexName} -%}
+{%- if search_parameters is not empty -%}
+{%- set index = index|merge({searchParameters: search_parameters}) -%}
 {%- endif -%}
 {%- set config = {
   container: options.container|default('#docsearch'),
   appId: '' ~ options.appId,
   apiKey: '' ~ options.apiKey,
-  indexName: '' ~ options.indexName,
+  indices: [index],
   insights: options.insights ?? false,
-  debug: options.debug ?? site.debug ?? false,
   placeholder: options.placeholder|default('Search docs'|trans),
   translations: {
     button: {
@@ -21,10 +25,11 @@
     },
     modal: {
       searchBox: {
-        resetButtonTitle: 'Clear the query'|trans,
-        resetButtonAriaLabel: 'Clear the query'|trans,
-        cancelButtonText: 'Cancel'|trans,
-        cancelButtonAriaLabel: 'Cancel'|trans
+        clearButtonTitle: 'Clear'|trans,
+        clearButtonAriaLabel: 'Clear the query'|trans,
+        closeButtonText: 'Close'|trans,
+        closeButtonAriaLabel: 'Close'|trans,
+        searchInputLabel: 'Search'|trans
       },
       startScreen: {
         recentSearchesTitle: 'Recent'|trans,
@@ -46,7 +51,7 @@
         navigateDownKeyAriaLabel: 'Arrow down'|trans,
         closeText: 'to close'|trans,
         closeKeyAriaLabel: 'Escape key'|trans,
-        searchByText: 'Search by'|trans
+        poweredByText: 'Powered by'|trans
       },
       noResultsScreen: {
         noResultsText: 'No results for'|trans,
@@ -57,10 +62,10 @@
     }
   }
 } -%}
-{%- if search_parameters is not empty -%}
-{%- set config = config|merge({searchParameters: search_parameters}) -%}
+{%- if options.askAi|default -%}
+{%- set config = config|merge({askAi: options.askAi}) -%}
 {%- endif %}
-{{ html(asset(library, {filename: 'docsearch.min.js', minify: false}), {id: 'docsearch-js', defer: ''}) }}
+{{ html(asset(library, {filename: 'docsearch.js', minify: false}), {id: 'docsearch-js', defer: ''}) }}
 {#- JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE #}
 <script>
   document.getElementById('docsearch-js').addEventListener('load', function () {
