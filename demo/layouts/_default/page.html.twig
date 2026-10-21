@@ -49,21 +49,6 @@
       :root {
         --docsearch-primary-color: var(--pico-primary);
       }
-      /* resets Pico styles inside the search modal */
-      .DocSearch-Modal {
-        text-align: start;
-      }
-      .DocSearch-Modal input.DocSearch-Input {
-        height: 100%;
-        margin: 0;
-        padding: 0 0 0 8px;
-        border: 0;
-        border-radius: 0;
-        background: none;
-        box-shadow: none;
-        color: var(--docsearch-text-color);
-        font-size: 1.2em;
-      }
       {{- include('partials/highlight.css.twig') ~}}
     {% endapply %}</style>
     {{- include('partials/docsearch/head.html.twig') ~}}

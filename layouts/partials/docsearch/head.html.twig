@@ -1,8 +1,34 @@
-{#- DocSearch <head> tags: language meta (used by the crawler), Algolia preconnect and stylesheet -#}
+{#- DocSearch <head> tags: language meta (used by the crawler), Algolia preconnect, stylesheet and resets -#}
 {%- set options = site.docsearch|default({}) -%}
 {%- if (options.enabled ?? true) and options.appId|default and options.apiKey|default and options.indexName|default -%}
-{%- set stylesheet = options.stylesheet|default('https://cdn.jsdelivr.net/npm/@docsearch/css@%s/dist/style.min.css'|format(options.version|default('3'))) %}
+{%- set stylesheet = options.stylesheet|default('https://cdn.jsdelivr.net/npm/@docsearch/css@%s/dist/style.min.css'|format(options.version|default('4'))) %}
 <meta name="docsearch:language" content="{{ site.language }}">
 <link rel="preconnect" href="https://{{ options.appId }}-dsn.algolia.net" crossorigin>
 {{ html(asset(stylesheet, {filename: 'docsearch.min.css'})) }}
+{#- resets the styles of classless CSS frameworks (e.g. Pico CSS, used by Cecil's default layout) inside the search modal #}
+<style>{% apply minify_css %}
+  /* the modal backdrop has a `button` role */
+  .DocSearch-Container {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+  }
+  .DocSearch-Modal {
+    text-align: start;
+  }
+  .DocSearch-Modal mark {
+    padding: 0;
+  }
+  .DocSearch-Modal input.DocSearch-Input {
+    height: 100%;
+    margin: 0;
+    padding: 0 0 0 8px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--docsearch-text-color);
+    font-size: 1.2em;
+  }
+{% endapply %}</style>
 {%- endif -%}

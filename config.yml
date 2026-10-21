@@ -4,7 +4,7 @@ docsearch:
   appId: '' # Algolia application ID
   apiKey: '' # Algolia search API key
   indexName: '' # Algolia index name
-  version: '3' # DocSearch version, loaded from jsDelivr
+  version: '4' # DocSearch version (4 or later), loaded from jsDelivr
   #library: '' # URL of the DocSearch JS library (overrides `version`)
   #stylesheet: '' # URL of the DocSearch stylesheet (overrides `version`)
   container: '#docsearch' # CSS selector of the element replaced by the search button
