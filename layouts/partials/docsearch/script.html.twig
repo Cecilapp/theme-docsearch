@@ -61,8 +61,15 @@
     }
   }
 } -%}
+{#- Ask AI: agent ID or options, with the language filter on the index (`filters`, as Ask AI doesn't support `facetFilters`) #}
 {%- if options.askAi|default -%}
-{%- set config = config|merge({askAi: options.askAi}) -%}
+{%- set ask_ai = options.askAi is iterable ? options.askAi : {agentId: '' ~ options.askAi} -%}
+{%- if options.language ?? true -%}
+{%- set ask_ai_parameters = ask_ai.searchParameters|default({}) -%}
+{%- set ask_ai_index = {filters: 'lang:' ~ site.language}|merge(ask_ai_parameters[options.indexName]|default({})) -%}
+{%- set ask_ai = ask_ai|merge({searchParameters: ask_ai_parameters|merge({('' ~ options.indexName): ask_ai_index})}) -%}
+{%- endif -%}
+{%- set config = config|merge({askAi: ask_ai}) -%}
 {%- endif %}
 {{ html(asset(library, {filename: 'docsearch.min.js', minify: false}), {id: 'docsearch-js', defer: ''}) }}
 {#- JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE #}

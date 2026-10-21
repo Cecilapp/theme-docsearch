@@ -129,6 +129,17 @@ docsearch:
     suggestedQuestions: true
 ```
 
+With `language` enabled, the sources of the answers are filtered on the current language too, with `filters: 'lang:<language>'` in the search parameters of the index (Ask AI doesn't support `facetFilters`). Set `filters` to override it:
+
+```yaml
+docsearch:
+  askAi:
+    agentId: <YOUR_AGENT_ID>
+    searchParameters:
+      <YOUR_INDEX_NAME>:
+        filters: 'lang:en AND version:2'
+```
+
 > [!NOTE]
 > With Ask AI, the full DocSearch library (`index.min.js`) is loaded instead of the keyword search library (`docsearch.min.js`), about twice as large. Ask AI texts are not translated by the theme.
 
