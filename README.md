@@ -77,7 +77,7 @@ docsearch:
   appId: '' # Algolia application ID
   apiKey: '' # Algolia search API key
   indexName: '' # Algolia index name
-  version: '3' # DocSearch version, loaded from jsDelivr
+  version: '4' # DocSearch version (4 or later), loaded from jsDelivr
   library: '' # URL of the DocSearch JS library (overrides `version`)
   stylesheet: '' # URL of the DocSearch stylesheet (overrides `version`)
   container: '#docsearch' # CSS selector of the element replaced by the search button
@@ -124,14 +124,28 @@ DocSearch styles are customized with [CSS custom properties](https://docsearch.a
 
 ```css
 :root {
-  --docsearch-primary-color: #1447e6;
+  --docsearch-highlight-color: #1447e6;
 }
-html[data-theme='dark'] {
-  --docsearch-primary-color: #8ec5ff;
+:root[data-theme='dark'] {
+  --docsearch-highlight-color: #8ec5ff;
 }
 ```
 
+> [!IMPORTANT]
+> Declare these properties after `partials/docsearch/head.html.twig`: the DocSearch stylesheet declares them on `:root` and `:root[data-theme='dark']` too.
+
 The dark mode is enabled by a `data-theme="dark"` attribute on the root element, as set by Cecil's theme selector.
+
+On hover and keyboard focus, the search button gets an accent border, customizable with `--docsearch-search-button-hover-border-color`. A shadow can be added too, for example:
+
+```css
+.DocSearch-Button:hover,
+.DocSearch-Button:focus-visible {
+  box-shadow: 0 4px 14px rgb(0 0 0 / 15%);
+}
+```
+
+The `<head>` partial also resets the styles that classless CSS frameworks, like [Pico CSS](https://picocss.com) used by Cecil's default layout, apply inside the search modal (backdrop, search input, buttons and highlighted terms).
 
 ### Internationalization
 

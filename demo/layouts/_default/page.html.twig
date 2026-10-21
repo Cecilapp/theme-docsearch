@@ -45,28 +45,20 @@
         border: none;
         box-shadow: none;
       }
-      /* the search modal follows the Pico accent color */
-      :root {
-        --docsearch-primary-color: var(--pico-primary);
-      }
-      /* resets Pico styles inside the search modal */
-      .DocSearch-Modal {
-        text-align: start;
-      }
-      .DocSearch-Modal input.DocSearch-Input {
-        height: 100%;
-        margin: 0;
-        padding: 0 0 0 8px;
-        border: 0;
-        border-radius: 0;
-        background: none;
-        box-shadow: none;
-        color: var(--docsearch-text-color);
-        font-size: 1.2em;
-      }
       {{- include('partials/highlight.css.twig') ~}}
     {% endapply %}</style>
     {{- include('partials/docsearch/head.html.twig') ~}}
+    {#- after the DocSearch stylesheet, which declares its variables on `:root` and `[data-theme=dark]` too #}
+    <style>{% apply minify_css ~%}
+      /* the search modal follows the Pico accent color */
+      :root,
+      :root[data-theme='dark'] {
+        --docsearch-primary-color: var(--pico-primary);
+        --docsearch-highlight-color: var(--pico-primary);
+        --docsearch-soft-primary-color: color-mix(in srgb, var(--pico-primary) 10%, transparent);
+        --docsearch-hit-highlight-color: color-mix(in srgb, var(--pico-primary) 10%, transparent);
+      }
+    {% endapply %}</style>
   </head>
   <body>
     <header>
