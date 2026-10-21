@@ -2,7 +2,10 @@
 
 The _DocSearch_ component theme for [Cecil](https://cecil.app) adds [Algolia DocSearch](https://docsearch.algolia.com) to a website: a search button and a search modal, querying an Algolia index of the website.
 
-![Screenshot](docs/screenshot.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png">
+  <img alt="Screenshot" src="docs/screenshot.png">
+</picture>
 
 **[Demo](https://cecilapp.github.io/theme-docsearch/)**
 
