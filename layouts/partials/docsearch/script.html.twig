@@ -1,7 +1,8 @@
 {#- DocSearch library and initialization, replacing the `container` element by the search button -#}
 {%- set options = site.docsearch|default({}) -%}
 {%- if (options.enabled ?? true) and options.appId|default and options.apiKey|default and options.indexName|default -%}
-{%- set library = options.library|default('https://cdn.jsdelivr.net/npm/@docsearch/js@%s/dist/umd/index.min.js'|format(options.version|default('4'))) -%}
+{#- keyword search only (`docsearch.min.js`), or keyword search and Ask AI (`index.min.js`) #}
+{%- set library = options.library|default('https://cdn.jsdelivr.net/npm/@docsearch/js@%s/dist/umd/%s.min.js'|format(options.version|default('5'), options.askAi|default ? 'index' : 'docsearch')) -%}
 {%- set search_parameters = options.search_parameters|default({}) -%}
 {%- if options.language ?? true -%}
 {%- set search_parameters = {facetFilters: ['lang:' ~ site.language]}|merge(search_parameters) -%}
@@ -16,7 +17,6 @@
   apiKey: '' ~ options.apiKey,
   indices: [index],
   insights: options.insights ?? false,
-  debug: options.debug ?? site.debug ?? false,
   translations: {
     button: {
       buttonText: 'Search'|trans,
@@ -33,7 +33,6 @@
       },
       startScreen: {
         recentSearchesTitle: 'Recent'|trans,
-        noRecentSearchesText: 'No recent searches'|trans,
         saveRecentSearchButtonTitle: 'Save this search'|trans,
         removeRecentSearchButtonTitle: 'Remove this search from history'|trans,
         favoriteSearchesTitle: 'Favorite'|trans,
@@ -61,7 +60,10 @@
       }
     }
   }
-} %}
+} -%}
+{%- if options.askAi|default -%}
+{%- set config = config|merge({askAi: options.askAi}) -%}
+{%- endif %}
 {{ html(asset(library, {filename: 'docsearch.min.js', minify: false}), {id: 'docsearch-js', defer: ''}) }}
 {#- JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE #}
 <script>

@@ -1,7 +1,7 @@
 {#- DocSearch <head> tags: language meta (used by the crawler), Algolia preconnect, stylesheet, button states and resets -#}
 {%- set options = site.docsearch|default({}) -%}
 {%- if (options.enabled ?? true) and options.appId|default and options.apiKey|default and options.indexName|default -%}
-{%- set stylesheet = options.stylesheet|default('https://cdn.jsdelivr.net/npm/@docsearch/css@%s/dist/style.min.css'|format(options.version|default('4'))) %}
+{%- set stylesheet = options.stylesheet|default('https://cdn.jsdelivr.net/npm/@docsearch/css@%s/dist/style.min.css'|format(options.version|default('5'))) %}
 <meta name="docsearch:language" content="{{ site.language }}">
 <link rel="preconnect" href="https://{{ options.appId }}-dsn.algolia.net" crossorigin>
 {{ html(asset(stylesheet, {filename: 'docsearch.min.css'})) }}
@@ -29,6 +29,14 @@
   .DocSearch-Modal mark {
     padding: 0;
   }
+  .DocSearch-Modal li,
+  .DocSearch-Modal section {
+    margin-bottom: 0;
+  }
+  .DocSearch-Modal kbd {
+    padding: 0;
+    font-weight: normal;
+  }
   .DocSearch-Hit-icon svg {
     display: block;
   }
@@ -39,8 +47,9 @@
   .DocSearch-Modal button:focus {
     box-shadow: none;
   }
+  /* `height: auto`: the search bar has a fixed height, but a padding relative to the font size, which crops the input text when the root font size is larger than 16px */
   .DocSearch-Modal input.DocSearch-Input {
-    height: 100%;
+    height: auto;
     margin: 0;
     padding: 0 0 0 8px;
     border: 0;
@@ -48,7 +57,8 @@
     background: none;
     box-shadow: none;
     color: var(--docsearch-text-color);
-    font-size: 1.2em;
+    font-size: 1rem;
+    line-height: 1.4;
   }
 {% endapply %}</style>
 {%- endif -%}
