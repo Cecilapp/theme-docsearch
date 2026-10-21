@@ -124,16 +124,19 @@ DocSearch styles are customized with [CSS custom properties](https://docsearch.a
 
 ```css
 :root {
-  --docsearch-primary-color: #1447e6;
+  --docsearch-highlight-color: #1447e6;
 }
-html[data-theme='dark'] {
-  --docsearch-primary-color: #8ec5ff;
+:root[data-theme='dark'] {
+  --docsearch-highlight-color: #8ec5ff;
 }
 ```
 
+> [!IMPORTANT]
+> Declare these properties after `partials/docsearch/head.html.twig`: the DocSearch stylesheet declares them on `:root` and `:root[data-theme='dark']` too.
+
 The dark mode is enabled by a `data-theme="dark"` attribute on the root element, as set by Cecil's theme selector.
 
-The `<head>` partial also resets the styles that classless CSS frameworks, like [Pico CSS](https://picocss.com) used by Cecil's default layout, apply inside the search modal (backdrop, search input and highlighted terms).
+The `<head>` partial also resets the styles that classless CSS frameworks, like [Pico CSS](https://picocss.com) used by Cecil's default layout, apply inside the search modal (backdrop, search input, buttons and highlighted terms).
 
 ### Internationalization
 
