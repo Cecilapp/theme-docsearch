@@ -68,8 +68,6 @@ new Crawler({
       attributeForDistinct: "url",
       customRanking: ["desc(weight.pageRank)", "desc(weight.level)", "asc(weight.position)"],
       ranking: ["words", "filters", "typo", "attribute", "proximity", "exact", "custom"],
-      highlightPreTag: '<span class="algolia-docsearch-suggestion--highlight">',
-      highlightPostTag: "</span>",
       minWordSizefor1Typo: 3,
       minWordSizefor2Typos: 7,
       allowTyposOnNumericTokens: false,
@@ -133,9 +131,11 @@ recordProps: {
 
 ### Language
 
-The `partials/docsearch/head.html.twig` template adds a `docsearch:language` meta tag to every page, and the theme filters the results on the current language with the `lang` facet (`facetFilters: ['lang:<language>']`).
+The theme filters the results on the current language with the `lang` facet (`facetFilters: ['lang:<language>']`). The crawler fills the `lang` attribute of the records with the `lang` attribute of the `<html>` element, which Cecil's layouts set to the language of the page (`<html lang="{{ site.language }}">`): keep it in your own layouts.
 
-For this filter to work, `lang` must be declared in `attributesForFaceting`:
+The `partials/docsearch/head.html.twig` template also adds a `docsearch:language` meta tag to every page, stored by the crawler as a `language` attribute.
+
+For the filter to work, `lang` must be declared in `attributesForFaceting`:
 
 ```js
 initialIndexSettings: {
@@ -188,4 +188,5 @@ Use the _URL Tester_ tab of the dashboard to check the records extracted from a 
 
 - [DocSearch: create a crawler](https://docsearch.algolia.com/docs/create-crawler)
 - [DocSearch: record extractor](https://docsearch.algolia.com/docs/record-extractor)
+- [DocSearch: meta tags](https://docsearch.algolia.com/docs/required-configuration/#introduce-global-information-as-meta-tags)
 - [Algolia Crawler: configuration API](https://www.algolia.com/doc/tools/crawler/apis/configuration/)
