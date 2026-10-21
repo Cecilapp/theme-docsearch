@@ -136,6 +136,15 @@ DocSearch styles are customized with [CSS custom properties](https://docsearch.a
 
 The dark mode is enabled by a `data-theme="dark"` attribute on the root element, as set by Cecil's theme selector.
 
+On hover and keyboard focus, the search button gets an accent border, customizable with `--docsearch-search-button-hover-border-color`. A shadow can be added too, for example:
+
+```css
+.DocSearch-Button:hover,
+.DocSearch-Button:focus-visible {
+  box-shadow: 0 4px 14px rgb(0 0 0 / 15%);
+}
+```
+
 The `<head>` partial also resets the styles that classless CSS frameworks, like [Pico CSS](https://picocss.com) used by Cecil's default layout, apply inside the search modal (backdrop, search input, buttons and highlighted terms).
 
 ### Internationalization

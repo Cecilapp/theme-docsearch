@@ -1,12 +1,22 @@
-{#- DocSearch <head> tags: language meta (used by the crawler), Algolia preconnect, stylesheet and resets -#}
+{#- DocSearch <head> tags: language meta (used by the crawler), Algolia preconnect, stylesheet, button states and resets -#}
 {%- set options = site.docsearch|default({}) -%}
 {%- if (options.enabled ?? true) and options.appId|default and options.apiKey|default and options.indexName|default -%}
 {%- set stylesheet = options.stylesheet|default('https://cdn.jsdelivr.net/npm/@docsearch/css@%s/dist/style.min.css'|format(options.version|default('4'))) %}
 <meta name="docsearch:language" content="{{ site.language }}">
 <link rel="preconnect" href="https://{{ options.appId }}-dsn.algolia.net" crossorigin>
 {{ html(asset(stylesheet, {filename: 'docsearch.min.css'})) }}
-{#- resets the styles of classless CSS frameworks (e.g. Pico CSS, used by Cecil's default layout) inside the search modal #}
+{#- search button states, and resets of the styles of classless CSS frameworks (e.g. Pico CSS, used by Cecil's default layout) inside the search modal #}
 <style>{% apply minify_css %}
+  /* search button: accent border on hover and keyboard focus */
+  .DocSearch-Button:hover,
+  .DocSearch-Button:focus-visible {
+    border-color: var(--docsearch-search-button-hover-border-color, var(--docsearch-highlight-color));
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .DocSearch-Button {
+      transition: border-color .2s, box-shadow .2s;
+    }
+  }
   /* the modal backdrop has a `button` role */
   .DocSearch-Container {
     padding: 0;
